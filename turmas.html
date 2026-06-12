@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turmas do Discente - SIGAA Mobile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        UNIFEI - SIGAA Mobile
+    </header>
+
+    <div class="sub-header">
+        <a href="home.html" class="sub-header-btn">
+            <i class="fa-solid fa-house" style="font-size: 0.95rem;"></i> Início
+        </a>
+        <a href="#" class="sub-header-btn" onclick="alert('Efetuando logout...')">
+            <i class="fa-solid fa-power-off" style="font-size: 0.95rem;"></i> Sair
+        </a>
+    </div>
+
+    <main>
+        <h2 class="section-title">Turmas do Discente</h2>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Buscar turmas...">
+        </div>
+
+        <section>
+            <div class="category-bar">
+                <span id="academic-period"></span>.1 - GRADUAÇÃO
+            </div>
+            
+            <ul class="list-container has-category">
+                <li class="list-item">
+                    <a class="list-link">
+                        <div class="list-link-content">
+                            <span class="list-link-title">BCTEC026 - CIÊNCIAS TÉRMICAS</span>
+                            <span class="list-link-subtitle">Local: Itajubá/MG</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link">
+                        <div class="list-link-content">
+                            <span class="list-link-title">BCTEC028 - COMUNICAÇÃO III - ENGLISH FOR PRESENTATIONS</span>
+                            <span class="list-link-subtitle">Local: Itajubá/MG</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link">
+                        <div class="list-link-content">
+                            <span class="list-link-title">BCTEC029 - CONTROLE E INSTRUMENTAÇÃO</span>
+                            <span class="list-link-subtitle">Local: Itajubá/MG</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link">
+                        <div class="list-link-content">
+                            <span class="list-link-title">BCTEC041 - DESENVOLVIMENTO DE PRODUTOS</span>
+                            <span class="list-link-subtitle">Local: Itajubá/MG</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link">
+                        <div class="list-link-content">
+                            <span class="list-link-title">BCTEC025 - PLANEJAMENTO GESTÃO E TOMADA DE DECISÃO</span>
+                            <span class="list-link-subtitle">Local: Itajubá/MG</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link">
+                        <div class="list-link-content">
+                            <span class="list-link-title">PI05 - PROJETOS INTEGRADORES V</span>
+                            <span class="list-link-subtitle">Local: Itajubá/MG</span>
+                        </div>
+                    </a>
+                </li>
+       
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            © 2006-<span class="current-year"></span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Modo Mobile</a> | <a href="#">Modo Clássico</a>
+        </div>
+    </footer>
+
+    <script>
+        const currentYear = new Date().getFullYear();
+        
+        // Aplica o ano atual dinamicamente
+        document.getElementById('academic-period').textContent = currentYear;
+
+        document.querySelectorAll('.current-year').forEach(el => {
+            el.textContent = currentYear;
+        });
+    </script>
+</body>
+</html>

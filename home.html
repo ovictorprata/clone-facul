@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIFEI - SIGAA Mobile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        UNIFEI - SIGAA Mobile
+    </header>
+
+    <main class="app-view">
+        <section class="profile-container">
+            <div class="profile-avatar" aria-hidden="true"></div>
+            <div class="profile-info">
+                <span class="profile-uid" id="display-matricula">---------</span>
+                <h1 class="profile-name" id="display-nome">CARREGANDO...</h1>
+                <span class="profile-course">CIÊNCIA E TECNOLOGIA/ICPA</span>
+            </div>
+        </section>
+
+        <nav aria-label="Menu Principal">
+            <ul class="list-container">
+                <li class="list-item">
+                    <a href="turmas.html" class="list-link">
+                        <span>Minhas Turmas</span>
+                        <div class="menu-arrow"></div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link" href="notas.html">
+                        <span>Minhas Notas</span>
+                        <div class="menu-arrow"></div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link" href="atestado.html">
+                        <span>Atestado de Matrícula</span>
+                        <div class="menu-arrow"></div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link" href="https://unifei.edu.br/ensino/bibliotecas/" target="_blank" rel="noopener noreferrer">
+                        <span>Biblioteca</span>
+                        <div class="menu-arrow"></div>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a class="list-link" href="index.html">
+                        <span>Sair</span>
+                        <div class="menu-arrow"></div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            © 2006-<span class="current-year"></span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Modo Mobile</a> | <a href="#">Modo Clássico</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // 1. Injeta dinamicamente o ano atual no rodapé
+        document.querySelectorAll('.current-year').forEach(el => {
+            el.textContent = new Date().getFullYear();
+        });
+
+        // 2. Recupera os dados salvos localmente
+        const nomeSalvo = localStorage.getItem('sigaa_nome');
+        const matriculaSalva = localStorage.getItem('sigaa_matricula');
+
+        // 3. Aplica os dados dinâmicos na tela se eles existirem
+        if (nomeSalvo && matriculaSalva) {
+            document.getElementById('display-nome').textContent = nomeSalvo;
+            document.getElementById('display-matricula').textContent = matriculaSalva;
+        }
+    });
+    </script>
+</body>
+</html>

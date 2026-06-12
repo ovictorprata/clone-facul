@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atestado de Matrícula - SIGAA Mobile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Estilos específicos para o layout do Atestado Oficial */
+        .document-container {
+            background-color: #ffffff;
+            border: 1px solid #b5b5b5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-btn);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .document-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 10px;
+        }
+
+        .university-logo {
+            max-width: 140px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+
+        .header-title-main {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title-sub {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #333333;
+            margin-top: 3px;
+        }
+
+        .emission-timestamp {
+            font-size: 0.8rem;
+            color: #333333;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        .document-title {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #000000;
+            text-transform: uppercase;
+            margin: 5px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid de Metadados do Aluno */
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 20px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #cccccc;
+            padding-bottom: 15px;
+        }
+
+        .metadata-item {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .metadata-label {
+            width: 120px;
+            color: #333333;
+            flex-shrink: 0;
+        }
+
+        .metadata-value {
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .full-width-item {
+            grid-column: span 2;
+        }
+
+        /* Seção de Turmas Matriculadas */
+        .section-subtitle {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #000000;
+            text-transform: uppercase;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #b5b5b5;
+        }
+
+        .atestado-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 650px;
+        }
+
+        .atestado-table th {
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: bold;
+            padding: 6px 8px;
+            border: 1px solid #b5b5b5;
+            text-align: center;
+        }
+
+        .atestado-table td {
+            padding: 8px;
+            border: 1px solid #b5b5b5;
+            color: #000000;
+            background-color: #ffffff;
+        }
+
+        .teacher-name {
+            font-size: 0.75rem;
+            color: #444444;
+            display: block;
+            margin-top: 2px;
+            font-weight: normal;
+        }
+
+        .text-center { text-align: center; }
+
+        /* Rodapé de Autenticidade Interno do Documento */
+        .auth-box {
+            border-top: 1px solid #333333;
+            margin-top: 10px;
+            padding-top: 12px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #000000;
+            line-height: 1.4;
+        }
+
+        .auth-box strong {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-link {
+            color: #b54a00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Barra de Ações de Impressão e Voltar */
+        .action-bar {
+            border: 1px solid #333333;
+            background-color: #ffffff;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #333333;
+        }
+
+        .action-link {
+            color: #2b4683;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        /* Responsividade para telas muito pequenas */
+        @media (max-width: 600px) {
+            .metadata-grid {
+                grid-template-columns: 1fr;
+            }
+            .full-width-item {
+                grid-column: span 1;
+            }
+            .metadata-label {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        UNIFEI - SIGAA Mobile
+    </header>
+
+    <main>
+        <section class="document-container">
+            
+            <div class="document-header">
+                <img src="logo-unifei.png" alt="Logo UNIFEI" class="university-logo">
+                <div class="header-title-main">Universidade Federal de Itajubá</div>
+                <div class="header-title-sub">Sistema Integrado de Gestão de Atividades Acadêmicas</div>
+                <div class="emission-timestamp">Emitido em <span id="emission-date"></span></div>
+            </div>
+
+            <h2 class="document-title">Atestado de Matrícula</h2>
+
+            <div class="metadata-grid">
+                <div class="metadata-item">
+                    <span class="metadata-label">Período Letivo:</span>
+                    <span class="metadata-value"><span class="dynamic-period"></span> (09/03/<span class="current-year"></span> à 15/07/<span class="current-year"></span>)</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Nível:</span>
+                    <span class="metadata-value">GRADUAÇÃO</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Matrícula:</span>
+                    <span class="metadata-value" id="display-matricula">---------</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Vínculo:</span>
+                    <span class="metadata-value">REGULAR</span>
+                </div>
+                <div class="metadata-item full-width-item">
+                    <span class="metadata-label">Nome:</span>
+                    <span class="metadata-value" id="display-nome">CARREGANDO...</span>
+                </div>
+                <div class="metadata-item full-width-item">
+                    <span class="metadata-label">Curso:</span>
+                    <span class="metadata-value">CIÊNCIA E TECNOLOGIA/ICPA - Itabira - BACHARELADO - EAD - MTN</span>
+                </div>
+                <div class="metadata-item full-width-item">
+                    <span class="metadata-label">Polo:</span>
+                    <span class="metadata-value">Itabira - MG</span>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Turmas Matriculadas: 6</h3>
+            
+            <div class="table-responsive">
+                <table class="atestado-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Per.</th>
+                            <th style="width: 15%;">Cód.</th>
+                            <th style="width: 55%; text-align: left;">Componentes Curriculares/Docentes</th>
+                            <th style="width: 10%;">Turma</th>
+                            <th style="width: 10%;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center dynamic-period"></td>
+                            <td class="text-center"><strong>BCTEC026</strong></td>
+                            <td>
+                                <strong>CIÊNCIAS TÉRMICAS</strong>
+                                <span class="teacher-name">ALEX TAKEO YASUMURA LIMA SILVA</span>
+                            </td>
+                            <td class="text-center">01</td>
+                            <td class="text-center">MATRICULADO</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center dynamic-period"></td>
+                            <td class="text-center"><strong>BCTEC028</strong></td>
+                            <td>
+                                <strong>COMUNICAÇÃO III - ENGLISH FOR PRESENTATIONS</strong>
+                                <span class="teacher-name">MARIA ELIZABETE VILLELA SANTIAGO</span>
+                            </td>
+                            <td class="text-center">01</td>
+                            <td class="text-center">MATRICULADO</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center dynamic-period"></td>
+                            <td class="text-center"><strong>BCTEC029</strong></td>
+                            <td>
+                                <strong>CONTROLE E INSTRUMENTAÇÃO</strong>
+                                <span class="teacher-name">MARIANA BRINATI ALTOMAR</span>
+                            </td>
+                            <td class="text-center">01</td>
+                            <td class="text-center">MATRICULADO</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center dynamic-period"></td>
+                            <td class="text-center"><strong>BCTEC041</strong></td>
+                            <td>
+                                <strong>DESENVOLVIMENTO DE PRODUTOS</strong>
+                                <span class="teacher-name">HUGO JOSE RIBEIRO JUNIOR e GISELLE DE PAULA QUEIROZ CUNHA</span>
+                            </td>
+                            <td class="text-center">01</td>
+                            <td class="text-center">MATRICULADO</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center dynamic-period"></td>
+                            <td class="text-center"><strong>BCTEC025</strong></td>
+                            <td>
+                                <strong>PLANEJAMENTO GESTÃO E TOMADA DE DECISÃO</strong>
+                                <span class="teacher-name">HUGO JOSE RIBEIRO JUNIOR e GISELLE DE PAULA QUEIROZ CUNHA</span>
+                            </td>
+                            <td class="text-center">01</td>
+                            <td class="text-center">MATRICULADO</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center dynamic-period"></td>
+                            <td class="text-center"><strong>PI05</strong></td>
+                            <td>
+                                <strong>PROJETOS INTEGRADORES V</strong>
+                                <span class="teacher-name">HENRIQUE FERNANDES VIEIRA VICTORIA</span>
+                            </td>
+                            <td class="text-center">04</td>
+                            <td class="text-center">MATRICULADO</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="auth-box">
+                <strong>ATENÇÃO</strong>
+                Para verificar a autenticidade deste documento acesse <a href="https://sigaa.unifei.edu.br/sigaa/documentos/" target="_blank" class="auth-link">https://sigaa.unifei.edu.br/sigaa/documentos/</a> informando a matrícula, a data de emission e o código de verificação <strong>5581c68e6d</strong>
+            </div>
+
+            <div class="action-bar">
+                <a href="home.html" class="action-link">
+                    <i class="fa-solid fa-chevron-left"></i> Voltar
+                </a>
+                <span>SIGAA | DTI - Diretoria de Tecnologia da Informação - (35) 3629-1080 | Copyright © 2006-<span class="current-year"></span> - UFRN - sigaa08.unifei.edu.br.sigaa08</span>
+                <a class="action-link" onclick="window.print()">
+                    Imprimir <i class="fa-solid fa-print"></i>
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            © 2006-<span class="current-year"></span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Modo Mobile</a> | <a href="#">Modo Clássico</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Captura a data corrente
+            const today = new Date(2026, 6, 12);
+            const currentYear = today.getFullYear();
+            
+            // Determina dinamicamente se o período letivo vigente é .1 ou .2
+            const currentSemester = today.getMonth() < 6 ? 1 : 2;
+            const periodString = `${currentYear}.${currentSemester}`;
+
+            // 1. Resgata e injeta os dados salvos no LocalStorage
+            const nomeSalvo = localStorage.getItem('sigaa_nome');
+            const matriculaSalva = localStorage.getItem('sigaa_matricula');
+
+            if (nomeSalvo && matriculaSalva) {
+                document.getElementById('display-nome').textContent = nomeSalvo.toUpperCase();
+                document.getElementById('display-matricula').textContent = matriculaSalva;
+            } else {
+                document.getElementById('display-nome').textContent = "ESTUDANTE NÃO IDENTIFICADO";
+            }
+
+            // 2. Injeta a string de Período Acadêmico Dinâmico (ex: 2026.1) nas colunas e metadados
+            document.querySelectorAll('.dynamic-period').forEach(el => {
+                el.textContent = periodString;
+            });
+
+            // 3. Injeta o ano corrente de forma isolada nos locais necessários (prazos e rodapés)
+            document.querySelectorAll('.current-year').forEach(el => {
+                el.textContent = currentYear;
+            });
+
+            // 4. Formata e exibe data/hora de emissão do documento em tempo real
+            const optionDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const optionTime = { hour: '2-digit', minute: '2-digit' };
+            document.getElementById('emission-date').textContent = `${today.toLocaleDateString('pt-BR', optionDate)} ${today.toLocaleTimeString('pt-BR', optionTime)}`;
+        });
+    </script>
+</body>
+</html>

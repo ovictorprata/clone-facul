@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIFEI - SIGAA Mobile - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Estilos específicos para a tela de Login/Sair */
+        .login-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 10px 5px;
+        }
+
+        .system-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #333333;
+            line-height: 1.4;
+        }
+
+        .alert-box {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #333333;
+            line-height: 1.4;
+        }
+
+        .alert-title {
+            color: #ff0000;
+            font-weight: bold;
+            display: block;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-label {
+            font-size: 0.95rem;
+            color: #555555;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 10px 45px 10px 10px;
+            border: 1px solid #333333;
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: #ffffff;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Ícone de teclado virtual simulando o do SIGAA */
+        .keyboard-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #d32f2f;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 3px 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .keyboard-btn:active {
+            background-color: #b71c1c;
+        }
+
+        /* Botões de Ação estilo SIGAA */
+        .btn-sigaa {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #222f4d;
+            border: 1px solid #b5b5b5;
+            border-radius: 4px;
+            background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+            cursor: pointer;
+            box-shadow: var(--shadow-btn);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .btn-sigaa:active {
+            background: linear-gradient(to bottom, #e6e6e6 0%, #d9d9d9 100%);
+        }
+
+        .public-area-section {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        UNIFEI - SIGAA Mobile
+    </header>
+
+    <main>
+        <div class="login-container">
+            
+            <div class="system-info">
+                UNIFEI - SIGAA - Sistema Integrado de Gestão de Atividades Acadêmicas
+            </div>
+
+            <div class="alert-box">
+                <span class="alert-title">Atenção!</span>
+                O sistema diferencia letras maiúsculas de minúsculas APENAS na senha, portanto ela deve ser digitada da mesma maneira que no cadastro.
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)">
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">Usuário:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" class="login-input" placeholder="Digite o usuário..." required autocomplete="username">
+                        <button type="button" class="keyboard-btn" title="Teclado Virtual" onclick="alert('Teclado virtual simulado')">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label for="password" class="form-label">Senha:</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" class="login-input" placeholder="Digite a senha..." required autocomplete="current-password">
+                        <button type="button" class="keyboard-btn" title="Teclado Virtual" onclick="alert('Teclado virtual simulado')">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-sigaa" style="margin-top: 20px;">Entrar</button>
+            </form>
+
+            <div class="public-area-section">
+                <a href="#" class="btn-sigaa" onclick="alert('Acessando Área Pública...')">Acessar Área Pública</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            © 2006-<span class="current-year"></span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Modo Mobile</a> | <a href="#">Modo Clássico</a>
+        </div>
+    </footer>
+
+    <script>
+        // Atualiza dinamicamente o ano corrente no rodapé
+        document.querySelectorAll('.current-year').forEach(el => {
+            el.textContent = new Date().getFullYear();
+        });
+
+        // Captura o nome, gera os dados locais e abre o index.html em outra aba
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const inputUsuario = document.getElementById('username');
+            const nomeDigitado = inputUsuario.value.toUpperCase();
+            
+            // Gera uma matrícula dinâmica: Ano Atual + 6 dígitos aleatórios
+            const anoAtual = new Date().getFullYear();
+            const sufixoAleatorio = Math.floor(100000 + Math.random() * 900000);
+            const matriculaGerada = `${anoAtual}${sufixoAleatorio}`;
+
+            // Salva no LocalStorage para que as páginas (index, notas, atestado) consumam
+            localStorage.setItem('sigaa_nome', nomeDigitado);
+            localStorage.setItem('sigaa_matricula', matriculaGerada);
+
+            // Abre o Menu Principal (index.html) em uma NOVA ABA
+            window.open("home.html", "_blank");
+
+            // Limpa o campo do login para boa UX
+            inputUsuario.value = "";
+            document.getElementById('password').value = "";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Notas - SIGAA Mobile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Estilos específicos para a tabela de notas clássica do SIGAA */
+        .report-header {
+            background-color: #ffffff;
+            border: 1px solid #b5b5b5;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            box-shadow: var(--shadow-btn);
+        }
+
+        .university-logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .report-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #222f4d;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--orange-border);
+            padding-bottom: 4px;
+            width: 100%;
+        }
+
+        .student-metadata {
+            width: 100%;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        /* Container das tabelas de notas */
+        .semester-block {
+            margin-bottom: 10px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background-color: #ffffff;
+            border: 1px solid #b5b5b5;
+            border-radius: 0 0 8px 8px;
+            box-shadow: var(--shadow-btn);
+        }
+
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+            min-width: 600px; /* Garante rolagem horizontal suave no mobile */
+        }
+
+        .grades-table th {
+            background-color: #f2f2f2;
+            color: #222f4d;
+            font-weight: bold;
+            padding: 8px;
+            border-bottom: 2px solid #b5b5b5;
+        }
+
+        .grades-table td {
+            padding: 8px;
+            border-bottom: 1px dashed #cccccc;
+            color: #333;
+            vertical-align: middle;
+        }
+
+        .grades-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Alinhamentos específicos do relatório */
+        .text-center { text-align: center; }
+        .col-code { width: 12%; }
+        .col-name { width: 45%; }
+        
+        /* Destaque para aprovações */
+        .status-apr {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        UNIFEI - SIGAA Mobile
+    </header>
+
+    <div class="sub-header">
+        <a href="home.html" class="sub-header-btn">
+            <i class="fa-solid fa-house" style="font-size: 0.95rem;"></i> Início
+        </a>
+        <a href="index.html" class="sub-header-btn">
+            <i class="fa-solid fa-power-off" style="font-size: 0.95rem;"></i> Sair
+        </a>
+    </div>
+
+    <main>
+        <section class="report-header">
+            <img src="logo-unifei.png" alt="Logo UNIFEI" class="university-logo">
+            <h2 class="report-title">Relatório de Notas do Aluno(a)</h2>
+            
+            <div class="student-metadata">
+                <div><strong>Aluno(a):</strong> <span id="display-nome">CARREGANDO...</span> - <span id="display-matricula">---------</span></div>
+                <div><strong>Curso:</strong> CIÊNCIA E TECNOLOGIA/ICPA</div>
+                <div><strong>Emitido em:</strong> <span id="emission-date"></span></div>
+            </div>
+        </section>
+
+        <section id="academic-history-container"></section>
+    </main>
+
+    <footer>
+        <div class="footer-top">
+            © 2006-<span class="current-year"></span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Modo Mobile</a> | <a href="#">Modo Clássico</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Data Atual do Sistema
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            
+            // 1. Resgata e injeta os dados salvos no LocalStorage
+            const nomeSalvo = localStorage.getItem('sigaa_nome');
+            const matriculaSalva = localStorage.getItem('sigaa_matricula');
+
+            if (nomeSalvo && matriculaSalva) {
+                document.getElementById('display-nome').textContent = nomeSalvo.toUpperCase();
+                document.getElementById('display-matricula').textContent = matriculaSalva;
+            } else {
+                // Fallback caso acesse a página isoladamente sem o setup
+                document.getElementById('display-nome').textContent = "ESTUDANTE NÃO IDENTIFICADO";
+            }
+
+            // 2. Formata a data e hora de emissão do documento
+            const optionDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const optionTime = { hour: '2-digit', minute: '2-digit' };
+            document.getElementById('emission-date').textContent = `${today.toLocaleDateString('pt-BR', optionDate)} ${today.toLocaleTimeString('pt-BR', optionTime)}`;
+            
+            // 3. Atualiza o ano corrente do rodapé
+            document.querySelectorAll('.current-year').forEach(el => el.textContent = currentYear);
+
+            // 4. Mock estruturado de disciplinas por semestres relativos (0 = atual, 1 = anterior...)
+            const disciplinesHistory = [
+                [
+                    { code: 'BCTEC026', name: 'CIÊNCIAS TÉRMICAS', u1: '2,0', u2: '', repo: '', res: '--', status: '--' },
+                    { code: 'BCTEC028', name: 'COMUNICAÇÃO III - ENGLISH FOR PRESENTATIONS', u1: '7,6', u2: '', repo: '', res: '--', status: '--' },
+                    { code: 'BCTEC029', name: 'CONTROLE E INSTRUMENTAÇÃO', u1: '3,5', u2: '', repo: '', res: '--', status: '--' },
+                    { code: 'BCTEC041', name: 'DESENVOLVIMENTO DE PRODUTOS', u1: '', u2: '', repo: '', res: '--', status: '--' },
+                    { code: 'BCTEC025', name: 'PLANEJAMENTO GESTÃO E TOMADA DE DECISÃO', u1: '', u2: '', repo: '', res: '--', status: '--' },
+                    { code: 'PI05', name: 'PROJETOS INTEGRADORES V', u1: '', u2: '', repo: '', res: '--', status: '--' }
+                ],
+                [
+                    { code: 'BCTEC024', name: 'CIÊNCIAS DOS MATERIAIS', u1: '5,4', u2: '9,7', repo: '', res: '7,6', status: 'APR' },
+                    { code: 'BCTEC022', name: 'CIÊNCIAS ELÉTRICAS', u1: '8,0', u2: '9,7', repo: '', res: '8,9', status: 'APR' },
+                    { code: 'BCTEC020', name: 'CIÊNCIAS MECÂNICAS', u1: '2,2', u2: '9,7', repo: '', res: '6,0', status: 'APR' },
+                    { code: 'BCTEC019', name: 'COMPUTAÇÃO EM NUVEM E DESENVOLVIMENTO WEB', u1: '8,4', u2: '9,7', repo: '', res: '9,1', status: 'APR' },
+                    { code: 'BCTEC023', name: 'EQUAÇÕES DIFERENCIAIS', u1: '7,7', u2: '9,7', repo: '', res: '8,7', status: 'APR' },
+                    { code: 'BCTEC027', name: 'INTELIGÊNCIA ARTIFICIAL', u1: '6,0', u2: '9,7', repo: '', res: '7,9', status: 'APR' },
+                    { code: 'BCTEC038', name: 'LIBRAS', u1: '9,0', u2: '9,0', repo: '', res: '9,0', status: 'APR' },
+                    { code: 'BCTEC021', name: 'PROBABILIDADE E ESTATÍSTICA', u1: '4,4', u2: '9,7', repo: '', res: '7,1', status: 'APR' },
+                    { code: 'PI04', name: 'PROJETOS INTEGRADORES IV', u1: '9,7', u2: '', repo: '', res: '9,7', status: 'APR' }
+                ],
+                [
+                    { code: 'BCTEC010', name: 'ADMINISTRAÇÃO EMPRESARIAL', u1: '9,1', u2: '9,1', repo: '', res: '9,1', status: 'APR' },
+                    { code: 'BCTEC014', name: 'CIÊNCIAS FÍSICAS  II', u1: '10,0', u2: '9,1', repo: '', res: '9,6', status: 'APR' },
+                    { code: 'BCTEC016', name: 'CIÊNCIAS QUÍMICAS II', u1: '6,8', u2: '9,1', repo: '', res: '8,0', status: 'APR' },
+                    { code: 'BCTEC013', name: 'MATEMÁTICA III', u1: '9,1', u2: '9,1', repo: '', res: '9,1', status: 'APR' },
+                    { code: 'BCTEC018', name: 'MÉTODOS NUMÉRICOS', u1: '8,9', u2: '9,1', repo: '', res: '9,0', status: 'APR' },
+                    { code: 'BCTEC015', name: 'PROGRAMAÇÃO PARA CIÊNCIA DE DADOS', u1: '8,9', u2: '9,1', repo: '', res: '9,0', status: 'APR' },
+                    { code: 'PI03', name: 'PROJETOS INTEGRADORES III', u1: '9,1', u2: '', repo: '', res: '9,1', status: 'APR' }
+                ],
+                [
+                    { code: 'BCTEC017', name: 'ÁLGEBRA LINEAR', u1: '10,0', u2: '7,9', repo: '', res: '9,0', status: 'APR' },
+                    { code: 'BCTEC009', name: 'CIÊNCIAS FÍSICAS I', u1: '10,0', u2: '7,9', repo: '', res: '9,0', status: 'APR' },
+                    { code: 'BCTEC011', name: 'CIÊNCIAS QUÍMICAS I', u1: '7,9', u2: '7,9', repo: '', res: '7,9', status: 'APR' },
+                    { code: 'BCTEC008', name: 'EXPRESSÕES GRÁFICAS', u1: '7,6', u2: '7,9', repo: '', res: '7,8', status: 'APR' },
+                    { code: 'BCTEC007', name: 'MATEMÁTICA II', u1: '9,6', u2: '7,9', repo: '', res: '8,8', status: 'APR' },
+                    { code: 'BCTEC012', name: 'MODELAGEM E IMPLEMENTAÇÃO DE BANCO DE DADOS', u1: '9,0', u2: '7,9', repo: '', res: '8,5', status: 'APR' }
+                ]
+            ];
+
+            // 5. Função para gerar rótulos de semestres retroativos dinamicamente
+            function generateAcademicSemesters(totalSemesters) {
+                let semestersLabels = [];
+                let loopYear = currentYear;
+                let currentPeriod = today.getMonth() < 6 ? 1 : 2;
+
+                for (let i = 0; i < totalSemesters; i++) {
+                    semestersLabels.push(`${loopYear}.${currentPeriod}`);
+                    currentPeriod--;
+                    if (currentPeriod === 0) {
+                        currentPeriod = 2;
+                        loopYear--;
+                    }
+                }
+                return semestersLabels;
+            }
+
+            // 6. Renderização dinâmica do histórico no container HTML
+            const container = document.getElementById('academic-history-container');
+            const semesterLabels = generateAcademicSemesters(disciplinesHistory.length);
+
+            disciplinesHistory.forEach((semesterData, index) => {
+                const categoryBar = document.createElement('div');
+                categoryBar.className = 'category-bar';
+                categoryBar.style.marginTop = '15px';
+                categoryBar.textContent = semesterLabels[index];
+                container.appendChild(categoryBar);
+
+                const tableResponsive = document.createElement('div');
+                tableResponsive.className = 'table-responsive';
+
+                let tableHtml = `
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th class="col-code">Código</th>
+                                <th class="col-name">Disciplina</th>
+                                <th class="text-center">Unidade. 1</th>
+                                <th class="text-center">Unidade. 2</th>
+                                <th class="text-center">Repos.</th>
+                                <th class="text-center">Resultado</th>
+                                <th class="text-center">Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                semesterData.forEach(disc => {
+                    const statusClass = disc.status === 'APR' ? 'class="status-apr text-center"' : 'class="text-center"';
+                    tableHtml += `
+                        <tr>
+                            <td><strong>${disc.code}</strong></td>
+                            <td>${disc.name}</td>
+                            <td class="text-center">${disc.u1}</td>
+                            <td class="text-center">${disc.u2}</td>
+                            <td class="text-center">${disc.repo}</td>
+                            <td class="text-center"><strong>${disc.res}</strong></td>
+                            <td ${statusClass}>${disc.status}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += `</tbody></table>`;
+                tableResponsive.innerHTML = tableHtml;
+                container.appendChild(tableResponsive);
+            });
+        });
+    </script>
+</body>
+</html>

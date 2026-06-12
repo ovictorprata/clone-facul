@@ -1,0 +1,279 @@
+/* --- Reset e Variáveis --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --blue-navy: #2b4683;
+    --orange-border: #f19a2a;
+    --bg-light: #e3ebf7;
+    --text-dark: #333333;
+    --text-gray: #666666;
+    --shadow-btn: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+body {
+    background-color: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+/* --- Header --- */
+header {
+    background-color: var(--blue-navy);
+    border-bottom: 3px solid var(--orange-border);
+    color: #ffffff;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Sub-header com os botões Início e Sair (Tela de Turmas) */
+.sub-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+    border-bottom: 1px solid #b5b5b5;
+}
+
+.sub-header-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    text-decoration: none;
+    color: #222f4d;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-right: 1px solid #b5b5b5;
+    cursor: pointer;
+}
+
+.sub-header-btn:last-child {
+    border-right: none;
+}
+
+/* --- Container Principal --- */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Limitador de largura para a tela Home parecer um app de celular */
+.app-view {
+    max-width: 500px;
+}
+
+/* --- Perfil do Usuário (Home) --- */
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 5px;
+}
+
+.profile-avatar {
+    width: 70px;
+    height: 85px;
+    background-color: #f0f0f0;
+    border: 1px solid #b5b5b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-avatar::before {
+    content: "📷";
+    font-size: 1.5rem;
+    opacity: 0.3;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.profile-uid {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.profile-name {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #222;
+}
+
+.profile-course {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+/* --- Componentes de Listagem (Menu e Turmas) --- */
+.section-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: -5px;
+}
+
+.category-bar {
+    background-color: var(--blue-navy);
+    color: #ffffff;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 4px 4px 0 0;
+}
+
+.list-container {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #b5b5b5;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-btn);
+}
+
+/* Ajuste quando encostado na barra de categoria */
+.has-category {
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+}
+
+.list-item {
+    border-bottom: 1px solid #cccccc;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    text-decoration: none;
+    color: #222f4d;
+    font-weight: bold;
+    font-size: 1.05rem;
+    background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+/* Variação para a listagem de turmas (texto menor e metadados) */
+.list-link-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+}
+
+.list-link-title {
+    font-size: 0.95rem;
+    color: #222f4d;
+}
+
+.list-link-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    font-weight: normal;
+}
+
+/* Seta Padrão SIGAA Mobile */
+.menu-arrow {
+    width: 22px;
+    height: 22px;
+    background-color: #5c709e;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.menu-arrow::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
+    transform: rotate(45deg);
+    margin-left: -2px;
+}
+
+/* --- Barra de Busca (Tela de Turmas) --- */
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 12px 10px 35px;
+    border: 1px solid #b5b5b5;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.search-container::before {
+    content: "🔍";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    opacity: 0.5;
+}
+
+/* --- Footer --- */
+footer {
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-top {
+    background-color: var(--blue-navy);
+    border-top: 3px solid var(--orange-border);
+    color: #ffffff;
+    text-align: center;
+    padding: 12px 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.footer-links {
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.footer-links a {
+    color: var(--blue-navy);
+    text-decoration: underline;
+    margin: 0 5px;
+}
