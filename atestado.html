@@ -223,9 +223,11 @@
 
             <div class="metadata-grid">
                 <div class="metadata-item">
-                    <span class="metadata-label">Período Letivo:</span>
-                    <span class="metadata-value"><span class="dynamic-period"></span> (09/03/<span class="current-year"></span> à 15/07/<span class="current-year"></span>)</span>
-                </div>
+                <span class="metadata-label">Período Letivo:</span>
+                <span class="metadata-value">
+                    <span class="dynamic-period"></span> (<span id="start-date"></span> à <span id="end-date"></span>)
+                </span>
+            </div>
                 <div class="metadata-item">
                     <span class="metadata-label">Nível:</span>
                     <span class="metadata-value">GRADUAÇÃO</span>
@@ -359,40 +361,59 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Captura a data corrente
-            const today = new Date(2026, 6, 12);
-            const currentYear = today.getFullYear();
-            
-            // Determina dinamicamente se o período letivo vigente é .1 ou .2
-            const currentSemester = today.getMonth() < 6 ? 1 : 2;
-            const periodString = `${currentYear}.${currentSemester}`;
+        // CORREÇÃO: No JS, o mês 5 representa JUNHO (0=Jan, 1=Fev, ..., 5=Jun)
+        const today = new Date(); 
+        const currentYear = today.getFullYear();
+        
+        let currentSemester;
+        if (today.getMonth() < 7) {
+            currentSemester = 1;
+        } else {
+            currentSemester = 2;
+        }
+        const periodString = `${currentYear}.${currentSemester}`;
 
-            // 1. Resgata e injeta os dados salvos no LocalStorage
-            const nomeSalvo = localStorage.getItem('sigaa_nome');
-            const matriculaSalva = localStorage.getItem('sigaa_matricula');
+        // 1. Resgata e injeta os dados salvos no LocalStorage
+        const nomeSalvo = localStorage.getItem('sigaa_nome');
+        const matriculaSalva = localStorage.getItem('sigaa_matricula');
 
-            if (nomeSalvo && matriculaSalva) {
-                document.getElementById('display-nome').textContent = nomeSalvo.toUpperCase();
-                document.getElementById('display-matricula').textContent = matriculaSalva;
+        if (nomeSalvo && matriculaSalva) {
+            document.getElementById('display-nome').textContent = nomeSalvo.toUpperCase();
+            document.getElementById('display-matricula').textContent = matriculaSalva;
+        } else {
+            document.getElementById('display-nome').textContent = "ESTUDANTE NÃO IDENTIFICADO";
+        }
+
+        // --- Dynamic Semester Dates Range ---
+        // Adicionando a verificação para que o cabeçalho do atestado use as datas que você pediu
+        const startDateEl = document.getElementById('start-date');
+        const endDateEl = document.getElementById('end-date');
+        
+        if (startDateEl && endDateEl) {
+            if (currentSemester === 1) {
+                startDateEl.textContent = `02/02/${currentYear}`;
+                endDateEl.textContent = `31/07/${currentYear}`;
             } else {
-                document.getElementById('display-nome').textContent = "ESTUDANTE NÃO IDENTIFICADO";
+                startDateEl.textContent = `01/08/${currentYear}`;
+                endDateEl.textContent = `31/12/${currentYear}`;
             }
+        }
 
-            // 2. Injeta a string de Período Acadêmico Dinâmico (ex: 2026.1) nas colunas e metadados
-            document.querySelectorAll('.dynamic-period').forEach(el => {
-                el.textContent = periodString;
-            });
-
-            // 3. Injeta o ano corrente de forma isolada nos locais necessários (prazos e rodapés)
-            document.querySelectorAll('.current-year').forEach(el => {
-                el.textContent = currentYear;
-            });
-
-            // 4. Formata e exibe data/hora de emissão do documento em tempo real
-            const optionDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
-            const optionTime = { hour: '2-digit', minute: '2-digit' };
-            document.getElementById('emission-date').textContent = `${today.toLocaleDateString('pt-BR', optionDate)} ${today.toLocaleTimeString('pt-BR', optionTime)}`;
+        // 2. Injeta a string de Período Acadêmico Dinâmico (ex: 2026.1) nas colunas e metadados
+        document.querySelectorAll('.dynamic-period').forEach(el => {
+            el.textContent = periodString;
         });
+
+        // 3. Injeta o ano corrente de forma isolada nos locais necessários (prazos e rodapés)
+        document.querySelectorAll('.current-year').forEach(el => {
+            el.textContent = currentYear;
+        });
+
+        // 4. Formata e exibe data/hora de emissão do documento em tempo real
+        const optionDate = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const optionTime = { hour: '2-digit', minute: '2-digit' };
+        document.getElementById('emission-date').textContent = `${today.toLocaleDateString('pt-BR', optionDate)} ${today.toLocaleTimeString('pt-BR', optionTime)}`;
+    });
     </script>
 </body>
 </html>
